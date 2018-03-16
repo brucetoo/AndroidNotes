@@ -46,10 +46,10 @@ class Outer {
         peoples.count(ageGt1)//以上两种表达方式结果一致
 
         //迭代maps
-        val personMap = mapOf(0 to "zero",1 to "one")
+        val personMap = mapOf(0 to "zero", 1 to "one")
         personMap.mapValues { it.value.toUpperCase() }
 
-        val list = listOf("a","ab","b")
+        val list = listOf("a", "ab", "b")
         list.groupBy { it.first() }
         list.groupBy(String::first)//采用Member reference形式
 
@@ -59,15 +59,15 @@ class Outer {
 
     }
 
-    fun strLenSafa(s: String?) : Int =
+    fun strLenSafa(s: String?): Int =
             //因为s标记了非null，因此直接使用s.length检查是会报错的
-        if(s != null) s.length else 0
+            if (s != null) s.length else 0
 
     fun String?.isNullOrBlack(): Boolean = this == null || this.isBlank()
 
-    fun checkUserInput(input: String?){
+    fun checkUserInput(input: String?) {
         //采用extension function在调用处规避了null的问题，而不是在调用前规避null
-        if(input.isNullOrBlack()){
+        if (input.isNullOrBlack()) {
             //....
         }
     }
@@ -96,3 +96,41 @@ fun getShippingCostCalculator(delivery: Delivery): (Order) -> Int {
     }
     return { order -> order.itemCount + 6 }
 }
+
+//extension function定义type parameters,获取倒数第二个字符
+val <T> List<T>.penultimate: T
+    get() = this[size - 2]
+
+//构建一个lambda作为参数的函数
+fun buildString(builderAction: (StringBuilder) -> Unit): String {
+    val sb = StringBuilder()//创建中间操作的StringBuilder
+    builderAction(sb)//执行方法
+    return sb.toString()
+}
+
+val testStringBuilder = buildString {
+    //使用it去获取StringBuilder instance
+    it.append("I'm")
+    it.append("Your")
+}
+
+//将lambda转换成 lambda with receiver
+fun buildString1(builderAction: StringBuilder.() -> Unit): String {
+    val sb = StringBuilder()
+    sb.builderAction()//传递StringBuilder作为lambda的receiver
+    return sb.toString()
+}
+
+val textStringBuilder = buildString1 {
+    this.append("IM") //this 代表了StringBuilder本身实例
+    append("Your")
+}
+
+fun buildString2(builderAction: StringBuilder.(String,String) -> Unit) : String{
+    val sb = StringBuilder()
+    sb.builderAction("地方","difang")
+    return sb.toString()
+}
+
+val textStringBuilder2 = buildString2 { s, b -> s + b + append("append")}
+
