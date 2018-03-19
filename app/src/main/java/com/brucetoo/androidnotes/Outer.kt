@@ -1,5 +1,7 @@
 package com.brucetoo.androidnotes
 
+import android.graphics.Point
+
 /**
  * Created by Bruce Too
  * On 27/02/2018.
@@ -60,7 +62,7 @@ class Outer {
     }
 
     fun strLenSafa(s: String?): Int =
-            //因为s标记了非null，因此直接使用s.length检查是会报错的
+    //因为s标记了非null，因此直接使用s.length检查是会报错的
             if (s != null) s.length else 0
 
     fun String?.isNullOrBlack(): Boolean = this == null || this.isBlank()
@@ -126,11 +128,49 @@ val textStringBuilder = buildString1 {
     append("Your")
 }
 
-fun buildString2(builderAction: StringBuilder.(String,String) -> Unit) : String{
+fun buildString2(builderAction: StringBuilder.(String, String) -> Unit): String {
     val sb = StringBuilder()
-    sb.builderAction("地方","difang")
+    sb.builderAction("地方", "difang")
     return sb.toString()
 }
 
-val textStringBuilder2 = buildString2 { s, b -> s + b + append("append")}
+val textStringBuilder2 = buildString2 { s, b -> s + b + append("append") }
+
+operator fun Point.get(index: Int): Int {
+    return when (index) {
+        0 -> x
+        1 -> y
+        else ->
+            throw IndexOutOfBoundsException("Invalid coordinate $index")
+    }
+}
+
+class Greeter(val greeting: String){
+    //operator修饰invoke方法，可以被当做函数调用，该函数有一个string入参
+    operator fun invoke(name: String){
+        println("$greeting,$name")
+    }
+}
+
+//初始化greeter实例
+val greeter = Greeter("Hello")
+//类似于map[key]的调用,只是将[]变成了()而已
+//greeter("brucetoo")
+
+data class Issue(
+        val id: String,
+        val project: String)
+
+//用 function type作为基类，入参(Issue)代表invoke方法的入参，返回值 Boolean代表invoke方法的返回值
+class testIssuePredicate(val project: String) : (Issue) -> Boolean{
+    //实现invoke方法
+    override fun invoke(p1: Issue): Boolean {
+        return p1.project == project
+    }
+}
+
+//Lambda返回值
+val predicate = testIssuePredicate("idea")
+
+
 
