@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_base"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:gravity="center"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tv_32"
+        android:textSize="32sp"
+        android:background="#ddd"
+        android:layout_width="match_parent"
+        android:text="示范文字32DP"
+        android:gravity="center"
+        android:layout_marginTop="10dp"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/tv_30"
+        android:textSize="30sp"
+        android:background="#ddd"
+        android:layout_width="match_parent"
+        android:text="示范文字30DP"
+        android:gravity="center"
+        android:layout_marginTop="10dp"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/tv_24"
+        android:textSize="24sp"
+        android:background="#ddd"
+        android:layout_width="match_parent"
+        android:text="示范文字24DP"
+        android:gravity="center"
+        android:layout_marginTop="10dp"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/tv_22"
+        android:textSize="22sp"
+        android:background="#ddd"
+        android:layout_width="match_parent"
+        android:text="示范文字22DP"
+        android:gravity="center"
+        android:layout_marginTop="10dp"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/tv_20"
+        android:textSize="20sp"
+        android:background="#ddd"
+        android:layout_width="match_parent"
+        android:text="示范文字20DP"
+        android:gravity="center"
+        android:layout_marginTop="10dp"
+        android:layout_height="wrap_content"/>
+</LinearLayout>
