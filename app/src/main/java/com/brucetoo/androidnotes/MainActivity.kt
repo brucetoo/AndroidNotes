@@ -2,22 +2,24 @@ package com.brucetoo.androidnotes
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Context
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.support.annotation.RequiresApi
 import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentManager
-import android.support.v4.app.FragmentStatePagerAdapter
-import android.support.v4.view.PagerAdapter
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.RecyclerView
 import android.util.Log
-import android.view.Gravity
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import kotlinx.android.synthetic.main.layout_dp.*
+import kotlinx.android.synthetic.main.list_item.view.*
 import kotlinx.coroutines.experimental.NonCancellable.cancel
 import org.jetbrains.anko.alert
+import org.jetbrains.anko.backgroundColor
+import java.util.*
 import kotlin.properties.Delegates
 
 class MainActivity : AppCompatActivity() {
@@ -37,6 +39,8 @@ class MainActivity : AppCompatActivity() {
     }
 
 
+    val fragments: ArrayList<String> = ArrayList()
+
     @SuppressLint("SetTextI18n")
     @RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,100 +48,53 @@ class MainActivity : AppCompatActivity() {
 
         setContentView(R.layout.layout_dp)
 
-//        for (index in 0..layout_base.childCount) {
-//            val child = layout_base.getChildAt(index) as? TextView
-//            if (child != null) {
-//                val text = child.text
-//                child.viewTreeObserver.addOnDrawListener {
-//                    child.text = "$text:${child.height}PX"
-//                }
-//                child.viewTreeObserver.removeOnDrawListener {  }
-//            }
-//        }
+        addFragments()
 
-        view_pager.offscreenPageLimit = 1
-//        view_pager.adapter = FragmentAdapter(supportFragmentManager)
-        view_pager.adapter = MyAdapter()
-
-//        observerName = "brucetoo"
-//        vetoableName = "brucetoo vetoable"
-
-//        showAreYouSureAlert {
-//            Log.e("alert", "show are you sure alert...")
-//        }
-
-//        MainActivityUI().setContentView(this)
-//
-//        val btn = Button(this)
-////        btn.viewTreeObserver
-//        verticalLayout {
-//            val email = editText {
-//                hint = "email"
-//            }
-//            val password = editText {
-//                hint = "password"
-//                transformationMethod = PasswordTransformationMethod.getInstance()
-//            }
-//            button {
-//                textResource = R.string.app_name
-//                onClick {
-//                    startActivity(intentFor<MainActivity>("id" to 5).singleTop())
-//                    startActivity<MainActivity>("id" to 5)
-//                }
-//            }
-//
-//            seekBar {
-//                onSeekBarChangeListener {
-//                    onProgressChanged { seekBar, progress, fromUser ->
-//
-//                    }
-//                }
-//            }
-//        }
-    }
-}
-
-class FragmentAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm){
-
-    override fun getItem(position: Int): Fragment {
-        val fragment = TestFragment()
-        val bundle = Bundle()
-        bundle.putInt("position",position)
-        fragment.arguments = bundle
-        return fragment
+        recycler_view.adapter = RecyclerAdapter(fragments,this)
     }
 
-    override fun getCount(): Int {
-        return 8
+    private fun addFragments(){
+        this.fragments.add(PagerTestFragment::class.java.simpleName)
     }
 
-}
-
-
- class MyAdapter : PagerAdapter(){
-
-    override fun isViewFromObject(view: View?, `object`: Any?): Boolean {
-        return view == `object`
-    }
-
-    override fun getCount(): Int {
-        return 8
-    }
-
-    override fun instantiateItem(container: ViewGroup?, position: Int): Any {
-        val text = TextView(container?.context)
-        text.text = position.toString()
-        text.textSize = 25f
-        text.gravity = Gravity.CENTER
-        if (text.parent == null){
-            container?.addView(text,ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT)
+    public fun navigate(fragment: String){
+        var item: Fragment = PagerTestFragment()
+        when (fragment) {
+            "PagerTestFragment" -> item = PagerTestFragment()
         }
-        Log.i("instantiateItem","index $position")
-        return text
+        supportFragmentManager.beginTransaction()
+                .replace(R.id.frame_container, item)
+                .addToBackStack("")
+                .commit()
+    }
+}
+
+class RecyclerAdapter(val fragments: ArrayList<String>,val context: Context): RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerAdapter.ViewHolder {
+        return ViewHolder(LayoutInflater.from(context).inflate(R.layout.list_item,parent,false))
     }
 
-    override fun destroyItem(container: ViewGroup?, position: Int, `object`: Any?) {
-        container?.removeView(`object` as View?)
+    override fun getItemCount(): Int {
+        return fragments.size
+    }
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        holder.fragment.text = fragments[position]
+        holder.itemView.backgroundColor = randomColor()
+        holder.itemView.setOnClickListener {
+            if(context is MainActivity){
+                context.navigate(fragments[position])
+            }
+        }
+    }
+
+    fun randomColor(): Int{
+        var rnd =  Random()
+        return Color.rgb(rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
+    }
+
+    class ViewHolder (view: View) : RecyclerView.ViewHolder(view) {
+        val fragment = view.tv_fragment
     }
 }
 
