@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="#fff">
+
+    <Button
+        android:id="@+id/percents"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="70% width"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintWidth_percent="0.7"/>
+
+
+    <Button
+        android:id="@+id/chains1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="chains1"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/chains2"
+        app:layout_constraintTop_toBottomOf="@+id/percents"/>
+
+    <Button
+        android:id="@+id/chains2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="chains2"
+        app:layout_constraintLeft_toRightOf="@id/chains1"
+        app:layout_constraintRight_toLeftOf="@id/chains3"
+        app:layout_constraintTop_toBottomOf="@+id/percents"/>
+
+    <Button
+        android:id="@+id/chains3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="chains3"
+        app:layout_constraintLeft_toRightOf="@id/chains2"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/percents"/>
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="warehouse"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/chains1" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="hospital"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView1" />
+
+    <android.support.constraint.Barrier
+        android:id="@+id/barrier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="end"
+        app:constraint_referenced_ids="textView2,textView1" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:text="@string/lorem"
+        app:layout_constraintStart_toEndOf="@+id/barrier"
+        app:layout_constraintTop_toBottomOf="@id/chains2"/>
+
+    <android.support.constraint.Group
+        android:id="@+id/barrier_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="textView3,textView2,textView1"
+        />
+
+    <Button
+        android:id="@+id/center"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:text="O"
+        app:layout_constraintTop_toBottomOf="@+id/textView3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintCircleRadius="50dp"
+        app:layout_constraintCircleAngle="315"
+        />
+    <Button
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:text="A"
+        app:layout_constraintCircleRadius="100dp"
+        app:layout_constraintCircle="@+id/center"
+        app:layout_constraintCircleAngle="315"
+        />
+
+    <Button
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:text="B"
+        app:layout_constraintCircleRadius="100dp"
+        app:layout_constraintCircle="@+id/center"
+        app:layout_constraintCircleAngle="270"
+        />
+
+    <Button
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:text="C"
+        app:layout_constraintCircleRadius="100dp"
+        app:layout_constraintCircle="@+id/center"
+        app:layout_constraintCircleAngle="225"
+        />
+
+
+</android.support.constraint.ConstraintLayout>

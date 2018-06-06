@@ -55,12 +55,14 @@ class MainActivity : AppCompatActivity() {
 
     private fun addFragments(){
         this.fragments.add(PagerTestFragment::class.java.simpleName)
+        this.fragments.add(ConstraintLayoutFragment::class.java.simpleName)
     }
 
     public fun navigate(fragment: String){
         var item: Fragment = PagerTestFragment()
         when (fragment) {
             "PagerTestFragment" -> item = PagerTestFragment()
+            "ConstraintLayoutFragment" -> item = ConstraintLayoutFragment()
         }
         supportFragmentManager.beginTransaction()
                 .replace(R.id.frame_container, item)
