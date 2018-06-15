@@ -1,4 +1,4 @@
-package com.brucetoo.androidnotes;
+package com.brucetoo.androidnotes.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -7,6 +7,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.brucetoo.androidnotes.R;
 
 /**
  * Created by Bruce Too
@@ -18,7 +20,7 @@ public class ConstraintLayoutFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.layout_containt_layout,container,false);
+        return inflater.inflate(R.layout.layout_containt_fragment,container,false);
     }
 
     @Override

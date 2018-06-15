@@ -14,6 +14,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.brucetoo.androidnotes.fragment.ConstraintLayoutFragment
+import com.brucetoo.androidnotes.fragment.NestedScrollFragment
 import kotlinx.android.synthetic.main.layout_dp.*
 import kotlinx.android.synthetic.main.list_item.view.*
 import kotlinx.coroutines.experimental.NonCancellable.cancel
@@ -56,6 +58,7 @@ class MainActivity : AppCompatActivity() {
     private fun addFragments(){
         this.fragments.add(PagerTestFragment::class.java.simpleName)
         this.fragments.add(ConstraintLayoutFragment::class.java.simpleName)
+        this.fragments.add(NestedScrollFragment::class.java.simpleName)
     }
 
     public fun navigate(fragment: String){
@@ -63,6 +66,7 @@ class MainActivity : AppCompatActivity() {
         when (fragment) {
             "PagerTestFragment" -> item = PagerTestFragment()
             "ConstraintLayoutFragment" -> item = ConstraintLayoutFragment()
+            "NestedScrollFragment" -> item = NestedScrollFragment()
         }
         supportFragmentManager.beginTransaction()
                 .replace(R.id.frame_container, item)
