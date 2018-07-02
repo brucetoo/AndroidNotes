@@ -24,6 +24,8 @@ import org.jetbrains.anko.alert
 import org.jetbrains.anko.backgroundColor
 import java.util.*
 import kotlin.properties.Delegates
+import kotlin.reflect.KClass
+import kotlin.reflect.full.createInstance
 
 class MainActivity : AppCompatActivity() {
 
@@ -42,7 +44,7 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    val fragments: ArrayList<String> = ArrayList()
+    val fragments: ArrayList<KClass<out Fragment>> = ArrayList()
 
     @SuppressLint("SetTextI18n")
     @RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
@@ -57,20 +59,21 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun addFragments(){
-        this.fragments.add(PagerTestFragment::class.java.simpleName)
-        this.fragments.add(ConstraintLayoutFragment::class.java.simpleName)
-        this.fragments.add(NestedScrollFragment::class.java.simpleName)
-        this.fragments.add(OkioFragment::class.java.simpleName)
+        this.fragments.add(PagerTestFragment::class)
+        this.fragments.add(ConstraintLayoutFragment::class)
+        this.fragments.add(NestedScrollFragment::class)
+        this.fragments.add(OkioFragment::class)
     }
 
-    public fun navigate(fragment: String){
-        var item: Fragment = PagerTestFragment()
-        when (fragment) {
-            "PagerTestFragment" -> item = PagerTestFragment()
-            "ConstraintLayoutFragment" -> item = ConstraintLayoutFragment()
-            "NestedScrollFragment" -> item = NestedScrollFragment()
-            "OkioFragment" -> item = OkioFragment()
-        }
+    public fun navigate(fragment: KClass<out Fragment>){
+        var item: Fragment = fragment.createInstance()
+
+//        when (fragment) {
+//            "PagerTestFragment" -> item = PagerTestFragment()
+//            "ConstraintLayoutFragment" -> item = ConstraintLayoutFragment()
+//            "NestedScrollFragment" -> item = NestedScrollFragment()
+//            "OkioFragment" -> item = OkioFragment()
+//        }
         supportFragmentManager.beginTransaction()
                 .replace(R.id.frame_container, item)
                 .addToBackStack("")
@@ -78,7 +81,7 @@ class MainActivity : AppCompatActivity() {
     }
 }
 
-class RecyclerAdapter(val fragments: ArrayList<String>,val context: Context): RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
+class RecyclerAdapter(val fragments: ArrayList<KClass<out Fragment>>,val context: Context): RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerAdapter.ViewHolder {
         return ViewHolder(LayoutInflater.from(context).inflate(R.layout.list_item,parent,false))
     }
@@ -88,7 +91,7 @@ class RecyclerAdapter(val fragments: ArrayList<String>,val context: Context): Re
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.fragment.text = fragments[position]
+        holder.fragment.text = fragments[position].java.simpleName
         holder.itemView.backgroundColor = randomColor()
         holder.itemView.setOnClickListener {
             if(context is MainActivity){

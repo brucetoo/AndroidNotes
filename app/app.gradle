@@ -25,6 +25,7 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    compile "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version" //反射需要引用
     implementation 'com.android.support:appcompat-v7:27.1.0'
     implementation "org.jetbrains.anko:anko-constraint-layout:$anko_version"
     implementation 'com.android.support.constraint:constraint-layout:1.1.0'
