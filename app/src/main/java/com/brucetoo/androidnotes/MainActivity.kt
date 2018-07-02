@@ -16,6 +16,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.brucetoo.androidnotes.fragment.ConstraintLayoutFragment
 import com.brucetoo.androidnotes.fragment.NestedScrollFragment
+import com.brucetoo.androidnotes.fragment.OkioFragment
 import kotlinx.android.synthetic.main.layout_dp.*
 import kotlinx.android.synthetic.main.list_item.view.*
 import kotlinx.coroutines.experimental.NonCancellable.cancel
@@ -59,6 +60,7 @@ class MainActivity : AppCompatActivity() {
         this.fragments.add(PagerTestFragment::class.java.simpleName)
         this.fragments.add(ConstraintLayoutFragment::class.java.simpleName)
         this.fragments.add(NestedScrollFragment::class.java.simpleName)
+        this.fragments.add(OkioFragment::class.java.simpleName)
     }
 
     public fun navigate(fragment: String){
@@ -67,6 +69,7 @@ class MainActivity : AppCompatActivity() {
             "PagerTestFragment" -> item = PagerTestFragment()
             "ConstraintLayoutFragment" -> item = ConstraintLayoutFragment()
             "NestedScrollFragment" -> item = NestedScrollFragment()
+            "OkioFragment" -> item = OkioFragment()
         }
         supportFragmentManager.beginTransaction()
                 .replace(R.id.frame_container, item)
