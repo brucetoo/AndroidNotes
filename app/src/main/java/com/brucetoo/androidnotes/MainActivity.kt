@@ -14,10 +14,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.brucetoo.androidnotes.fragment.ConstraintLayoutFragment
-import com.brucetoo.androidnotes.fragment.JumpingBeansFragment
-import com.brucetoo.androidnotes.fragment.NestedScrollFragment
-import com.brucetoo.androidnotes.fragment.OkioFragment
+import com.brucetoo.androidnotes.fragment.*
 import kotlinx.android.synthetic.main.layout_dp.*
 import kotlinx.android.synthetic.main.list_item.view.*
 import kotlinx.coroutines.experimental.NonCancellable.cancel
@@ -65,6 +62,7 @@ class MainActivity : AppCompatActivity() {
         this.fragments.add(NestedScrollFragment::class)
         this.fragments.add(OkioFragment::class)
         this.fragments.add(JumpingBeansFragment::class)
+        this.fragments.add(OkHttpFragment::class)
     }
 
     public fun navigate(fragment: KClass<out Fragment>){
