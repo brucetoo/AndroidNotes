@@ -56,6 +56,7 @@ import javax.annotation.Nullable;
  * Any IO - writing to files or network should be done asynchronously.
  */
 public abstract class EventListener {
+  //这种写法不错
   public static final EventListener NONE = new EventListener() {
   };
 

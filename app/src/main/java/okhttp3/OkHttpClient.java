@@ -247,6 +247,7 @@ public class OkHttpClient implements Cloneable, Call.Factory, WebSocket.Factory 
       isTLS = isTLS || spec.isTls();
     }
 
+    //TODO 这个不是很清楚，证书相关的配置处理
     if (builder.sslSocketFactory != null || !isTLS) {
       this.sslSocketFactory = builder.sslSocketFactory;
       this.certificateChainCleaner = builder.certificateChainCleaner;
@@ -271,6 +272,7 @@ public class OkHttpClient implements Cloneable, Call.Factory, WebSocket.Factory 
     this.writeTimeout = builder.writeTimeout;
     this.pingInterval = builder.pingInterval;
 
+    //这个用法挺好，可以直接将null过滤掉，防止跌打的时候出错
     if (interceptors.contains(null)) {
       throw new IllegalStateException("Null interceptor: " + interceptors);
     }
@@ -473,25 +475,40 @@ public class OkHttpClient implements Cloneable, Call.Factory, WebSocket.Factory 
     int pingInterval;
 
     public Builder() {
+        //异步执行请求的策略(Policy on when async requests are executed)
       dispatcher = new Dispatcher();
+      //默认支持的协议，http2,http1.
+      // TODO 还有其他协议是之间的区别？
       protocols = DEFAULT_PROTOCOLS;
+      //底层socket的配置。默认是 TLS SSL/TLS协议的基本思路是采用公钥加密法 https://kb.cnblogs.com/page/197396/
       connectionSpecs = DEFAULT_CONNECTION_SPECS;
+      //相关指标的事件，比如请求的quantity,size,duration...
       eventListenerFactory = EventListener.factory(EventListener.NONE);
+      //默认的系统代理服务
       proxySelector = ProxySelector.getDefault();
+      //cookie文件存储处理，自实现需要提供保存和恢复的实现，默认不处理
       cookieJar = CookieJar.NO_COOKIES;
+      //socket工厂方法
       socketFactory = SocketFactory.getDefault();
+      //hostname校验器
       hostnameVerifier = OkHostnameVerifier.INSTANCE;
+      //可信任的证书
       certificatePinner = CertificatePinner.DEFAULT;
       proxyAuthenticator = Authenticator.NONE;
       authenticator = Authenticator.NONE;
+      //连接迟
       connectionPool = new ConnectionPool();
+      //dns解析
       dns = Dns.SYSTEM;
+      //是否处理重定向
       followSslRedirects = true;
       followRedirects = true;
+      //请求失败重试
       retryOnConnectionFailure = true;
       connectTimeout = 10_000;
       readTimeout = 10_000;
       writeTimeout = 10_000;
+      //心跳轮询？？
       pingInterval = 0;
     }
 
@@ -879,6 +896,8 @@ public class OkHttpClient implements Cloneable, Call.Factory, WebSocket.Factory 
      * Returns a modifiable list of interceptors that observe the full span of each call: from
      * before the connection is established (if any) until after the response source is selected
      * (either the origin server, cache, or both).
+     * 全局拦截器，只会返回最终的一次，而不管中间是否有重定向什么的发生
+     * 具体的区别于 NetworkInterceptors见 https://github.com/square/okhttp/wiki/Interceptors
      */
     public List<Interceptor> interceptors() {
       return interceptors;
@@ -893,7 +912,7 @@ public class OkHttpClient implements Cloneable, Call.Factory, WebSocket.Factory 
     /**
      * Returns a modifiable list of interceptors that observe a single network request and response.
      * These interceptors must call {@link Interceptor.Chain#proceed} exactly once: it is an error
-     * for a network interceptor to short-circuit or repeat a network request.
+     * for a network interceptor to short-circuit(短路) or repeat a network request.
      */
     public List<Interceptor> networkInterceptors() {
       return networkInterceptors;

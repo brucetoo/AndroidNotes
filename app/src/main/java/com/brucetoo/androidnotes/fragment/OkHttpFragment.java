@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,7 +26,7 @@ import okhttp3.Response;
  * On 05/07/2018.
  * At 15:59
  */
-public class OkHttpFragment extends Fragment{
+public class OkHttpFragment extends Fragment {
 
     @Nullable
     @Override
@@ -41,23 +42,59 @@ public class OkHttpFragment extends Fragment{
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        OkHttpClient client = new OkHttpClient.Builder().addInterceptor(new Interceptor() {
-            @Override
-            public Response intercept(Chain chain) throws IOException {
-                return chain.proceed(chain.request());
-            }
-        }).build();
-        Request request = new Request.Builder().url("https://github.com/brucetoo").build();
+        OkHttpClient client = new OkHttpClient.Builder()
+                .addInterceptor(new Interceptor() {
+                    @Override
+                    public Response intercept(Chain chain) throws IOException {
+                        Request request = chain.request();
+                        Log.i("OkHttpFragment", String.format("Sending request %s on %s%n%s",
+                                request.url(), chain.connection(), request.headers()));
+
+                        Response response = chain.proceed(request);
+
+                        Log.i("OkHttpFragment", String.format("Received response for %s  %s",
+                                response.request().url(), response.headers()));
+                        return response;
+                    }
+                })
+                .addNetworkInterceptor(new Interceptor() {
+                    @Override
+                    public Response intercept(Chain chain) throws IOException {
+                        Request request = chain.request();
+                        Log.i("OkHttpFragment", String.format("Net Sending request %s on %s%n%s",
+                                request.url(), chain.connection(), request.headers()));
+
+                        Response response = chain.proceed(request);
+
+                        Log.i("OkHttpFragment", String.format("Net Received response for %s  %s",
+                                response.request().url(), response.headers()));
+                        return response;
+                    }
+                })
+                .build();
+        Request request = new Request.Builder().url("http://www.publicobject.com/helloworld.txt").build();
         Call call = client.newCall(request);
         call.enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-
+                Log.i("OkHttpFragment", String.format("onFailure %s",
+                        e.getMessage()));
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
+                Log.i("OkHttpFragment", String.format("onResponse for %s  %s",
+                        response.request().url(), response.body()));
             }
         });
+    }
+
+    /**
+     * 截取浮点数到几位
+     * 0.1246 -> 截取三位 -> 0.125
+     */
+    protected static float truncate(float f, int decimalPlaces) {
+        float decimalShift = (float) Math.pow(10, decimalPlaces);
+        return Math.round(f * decimalShift) / decimalShift;
     }
 }
