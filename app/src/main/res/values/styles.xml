@@ -8,4 +8,14 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+
+    <style name="SpecialTextAppearance" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/color1</item>
+        <item name="android:textColorHighlight">@color/color2</item>
+        <item name="android:textColorHint">@color/color3</item>
+        <item name="android:textColorLink">@color/color4</item>
+        <item name="android:textSize">28sp</item>
+        <item name="android:textStyle">italic</item>
+    </style>
+
 </resources>

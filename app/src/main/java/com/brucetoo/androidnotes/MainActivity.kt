@@ -63,6 +63,7 @@ class MainActivity : AppCompatActivity() {
         this.fragments.add(OkioFragment::class)
         this.fragments.add(JumpingBeansFragment::class)
         this.fragments.add(OkHttpFragment::class)
+        this.fragments.add(SpanFragment::class)
     }
 
     public fun navigate(fragment: KClass<out Fragment>){
