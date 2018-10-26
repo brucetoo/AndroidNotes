@@ -16,6 +16,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.brucetoo.androidnotes.fragment.*
 import com.brucetoo.androidnotes.shapereplace.BackgroundLibrary
+import com.brucetoo.androidnotes.tools.RefHandler
 import kotlinx.android.synthetic.main.layout_dp.*
 import kotlinx.android.synthetic.main.list_item.view.*
 import kotlinx.coroutines.experimental.NonCancellable.cancel
@@ -55,7 +56,14 @@ class MainActivity : AppCompatActivity() {
 
         addFragments()
 
+        checkRefHandler()
+
         recycler_view.adapter = RecyclerAdapter(fragments,this)
+    }
+
+    private fun checkRefHandler() {
+        var handler: RefHandler<MainActivity> = RefHandler(this, RefHandler.MessageCallback { referSelf, msg -> Log.i("handleMessage", "out ") })
+        handler.sendEmptyMessage(1)
     }
 
     private fun addFragments(){
