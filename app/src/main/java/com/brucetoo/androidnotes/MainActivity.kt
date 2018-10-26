@@ -15,6 +15,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.brucetoo.androidnotes.fragment.*
+import com.brucetoo.androidnotes.shapereplace.BackgroundLibrary
 import kotlinx.android.synthetic.main.layout_dp.*
 import kotlinx.android.synthetic.main.list_item.view.*
 import kotlinx.coroutines.experimental.NonCancellable.cancel
@@ -47,6 +48,7 @@ class MainActivity : AppCompatActivity() {
     @SuppressLint("SetTextI18n")
     @RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
     override fun onCreate(savedInstanceState: Bundle?) {
+        BackgroundLibrary.inject(this)
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.layout_dp)
@@ -64,6 +66,7 @@ class MainActivity : AppCompatActivity() {
         this.fragments.add(JumpingBeansFragment::class)
         this.fragments.add(OkHttpFragment::class)
         this.fragments.add(SpanFragment::class)
+        this.fragments.add(ShapeReplaceFragment::class)
     }
 
     public fun navigate(fragment: KClass<out Fragment>){
