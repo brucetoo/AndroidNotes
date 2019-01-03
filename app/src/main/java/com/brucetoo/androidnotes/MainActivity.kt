@@ -75,6 +75,7 @@ class MainActivity : AppCompatActivity() {
         this.fragments.add(OkHttpFragment::class)
         this.fragments.add(SpanFragment::class)
         this.fragments.add(ShapeReplaceFragment::class)
+        this.fragments.add(NoClipPagerFragment::class)
     }
 
     public fun navigate(fragment: KClass<out Fragment>){
